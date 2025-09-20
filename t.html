@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Date Me? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #ff6b9d, #c44569, #f8b500, #ff6b9d);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 90%;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Initial Question Screen */
+        .question-screen {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255, 182, 193, 0.5);
+            animation: floatIn 2s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes floatIn {
+            0% { 
+                opacity: 0; 
+                transform: translateY(-50px) scale(0.8);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .question-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,182,193,0.1), rgba(255,105,180,0.1));
+            z-index: -1;
+        }
+
+        .question-title {
+            font-size: 2.2em;
+            color: #d63384;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 0 2px 10px rgba(214, 51, 132, 0.3);
+            animation: heartbeat 2s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .question-subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 100px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff69b4, #ff1744);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 23, 68, 0.4);
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 23, 68, 0.6);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            box-shadow: 0 10px 30px rgba(108, 117, 125, 0.4);
+            transition: all 0.2s ease;
+            position: absolute;
+        }
+
+        .btn-no:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        /* Date Menu Screen */
+        .date-menu {
+            display: none;
+            animation: slideInUp 1s ease-out;
+        }
+
+        @keyframes slideInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #d63384;
+            font-size: 2em;
+            font-weight: bold;
+            text-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 3px 6px rgba(214, 51, 132, 0.4); }
+            100% { text-shadow: 0 5px 20px rgba(214, 51, 132, 0.8); }
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .option-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(214, 51, 132, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff69b4, #ff1744, #ff69b4);
+            background-size: 200% 200%;
+            animation: borderGlow 3s linear infinite;
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .option-card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .option-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(214, 51, 132, 0.4);
+        }
+
+        .option-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .option-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #d63384;
+            margin-bottom: 8px;
+        }
+
+        .option-description {
+            color: #666;
+            line-height: 1.4;
+            font-size: 0.95em;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(253,242,248,0.95));
+            backdrop-filter: blur(20px);
+            margin: 10% auto;
+            padding: 30px 25px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            text-align: center;
+            position: relative;
+            animation: modalSlideIn 0.5s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            0% { 
+                opacity: 0; 
+                transform: translateY(-50px) scale(0.8);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .close {
+            color: #d63384;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            color: #ff1744;
+            transform: scale(1.2);
+        }
+
+        .modal-title {
+            color: #d63384;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .game-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .game-option {
+            background: rgba(255, 182, 193, 0.3);
+            border: 2px solid #ff69b4;
+            border-radius: 15px;
+            padding: 15px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .game-option:hover {
+            background: rgba(255, 182, 193, 0.6);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.3);
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group label {
+            display: block;
+            color: #d63384;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ffb6c1;
+            border-radius: 15px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: #ff69b4;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+            transform: scale(1.02);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #ff69b4, #ff1744);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(255, 23, 68, 0.4);
+        }
+
+        /* Floating Elements */
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+            top: 0;
+            left: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 182, 193, 0.7);
+            font-size: 25px;
+            animation: floatHeart 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .sparkles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            top: 0;
+            left: 0;
+        }
+
+        .sparkle {
+            position: absolute;
+            color: rgba(255, 215, 0, 0.8);
+            font-size: 15px;
+            animation: sparkle 3s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0; 
+                transform: scale(0) rotate(0deg);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1) rotate(180deg);
+            }
+        }
+
+        .custom-input {
+            margin-top: 20px;
+            padding: 20px 15px;
+            background: rgba(255, 182, 193, 0.15);
+            border-radius: 15px;
+            border: 2px dashed #ff69b4;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 480px) {
+            .question-title {
+                font-size: 1.8em;
+            }
+            
+            .menu-title {
+                font-size: 1.6em;
+            }
+            
+            .option-card {
+                padding: 20px 15px;
+            }
+            
+            .option-icon {
+                font-size: 2.5em;
+            }
+            
+            .buttons-container {
+                gap: 15px;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 1em;
+                min-width: 90px;
+            }
+            
+            .modal-content {
+                padding: 25px 20px;
+                margin: 5% auto;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+    <div class="sparkles" id="sparkles"></div>
+    
+    <div class="container">
+        <!-- Initial Question Screen -->
+        <div id="questionScreen" class="question-screen">
+            <div style="font-size: 4em; margin-bottom: 20px; animation: pulse 2s infinite;">💕</div>
+            <h1 class="question-title">وش رايك نطلع موعد؟</h1>
+            <p class="question-subtitle">أوعدك اني اخليك مبسوط 🥰</p>
+            
+            <div class="buttons-container">
+                <button class="btn btn-yes" onclick="showDateMenu()">
+                    يب! 💕
+                </button>
+                <button id="noBtn" class="btn btn-no" onclick="moveNoButton()" style="position: relative;">
+                    لا 😢
+                </button>
+            </div>
+        </div>
+
+        <!-- Date Menu -->
+        <div id="dateMenu" class="date-menu">
+            <h1 class="menu-title">اختاري اي شي تبين نسويه💕 </h1>
+            
+            <div class="options-grid">
+                <div class="option-card" onclick="openMovieModal()">
+                    <span class="option-icon">🎬</span>
+                    <h3 class="option-title">نشوف فلم</h3>
+                    <p class="option-description">خلنا نتمدد سوا ونشوف لنا شي حلو 💕</p>
+                </div>
+                
+                <div class="option-card" onclick="openGameModal()">
+                    <span class="option-icon">🎮</span>
+                    <h3 class="option-title">نلعب لعبه</h3>
+                    <p class="option-description">حتى لو لعبتنا عادي 🫣</p>
+                </div>
+                
+                <div class="option-card" onclick="openTalkModal()">
+                    <span class="option-icon">💬</span>
+                    <h3 class="option-title">اي شي ثاني او كلام تبي تقوله </h3>
+                    <p class="option-description">شاركني اي فكره ببالك او شي تبين نسويه</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movie Modal -->
+    <div id="movieModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('movieModal')">&times;</span>
+            <h2 class="modal-title">🎬 وش الفلم او المسلسل</h2>
+            <div class="input-group">
+                <label for="movieChoice">اختارررررر</label>
+                <input type="text" id="movieChoice" placeholder="احبك فرح ..">
+            </div>
+            <button class="submit-btn" onclick="submitMovie()">date 🤪تأكيد ال</button>
+        </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('gameModal')">&times;</span>
+            <h2 class="modal-title">🎮 Game Time</h2>
+            <div class="game-options">
+                <div class="game-option" onclick="selectGame('Roblox')">
+                    <div style="font-size: 50px; margin-bottom: 8px;">🎲</div>
+                    <strong>Roblox</strong>
+                </div>
+                <div class="game-option" onclick="selectGame('Minecraft')">
+                    <div style="font-size: 50px; margin-bottom: 8px;">🌍</div>
+                    <strong>Minecraft</strong>
+                </div>
+            </div>
+            <div class="custom-input">
+                <div class="input-group">
+                    <label for="customGame">اختاري اللعبه الي تبين نلعبها سوا </label>
+                    <input type="text" id="customGame" placeholder="اخلصصصص">
+                    <button class="submit-btn" onclick="submitCustomGame()">ارسلللل</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Talk Modal -->
+    <div id="talkModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('talkModal')">&times;</span>
+            <h2 class="modal-title">💬 Let's Connect</h2>
+            <div class="game-options" style="grid-template-columns: 1fr; margin-bottom: 20px;">
+                <div class="game-option" onclick="selectActivity('Just Talk')">
+                    <div style="font-size: 50px; margin-bottom: 8px;">💕</div>
+                    <strong>كلمني</strong>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="activityChoice">في ببالك شي ثاني حبيبي ؟ 🥺</label>
+                <textarea id="activityChoice" rows="3" placeholder="علمني وش تبين عيوني لك .."></textarea>
+            </div>
+            <button class="submit-btn" onclick="submitActivity()">ارسلللل</button>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts and sparkles
+        function createFloatingElements() {
+            const heartsContainer = document.getElementById('floatingHearts');
+            const sparklesContainer = document.getElementById('sparkles');
+            
+            // Create hearts
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = Math.random() > 0.5 ? '💕' : '💖';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (15 + Math.random() * 20) + 'px';
+                heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 10000);
+            }, 800);
+            
+            // Create sparkles
+            setInterval(() => {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.innerHTML = '✨';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparklesContainer.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 3000);
+            }, 500);
+        }
+
+        
+        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1419013138392682637/1KS5GsT6Wd7Gd4P1VFTLyq6F1gM_RYIVNg74nIVRygqFeRY1eaB7zxBkThRDWdxVY1f7';
+        
+        let noButtonMoveCount = 0;
+        const noButtonPositions = [
+            { top: '70%', left: '20%' },
+            { top: '30%', left: '70%' },
+            { top: '80%', left: '60%' },
+            { top: '20%', left: '80%' },
+            { top: '60%', left: '10%' },
+            { top: '40%', left: '90%' },
+            { top: '90%', left: '30%' },
+        ];
+
+        function moveNoButton() {
+            const noBtn = document.getElementById('noBtn');
+            const position = noButtonPositions[noButtonMoveCount % noButtonPositions.length];
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.top = position.top;
+            noBtn.style.left = position.left;
+            noBtn.style.transform = 'translate(-50%, -50%)';
+            noBtn.style.zIndex = '1000';
+            
+            // Add shake animation
+            noBtn.style.animation = 'shake 0.5s ease-in-out';
+            
+            noButtonMoveCount++;
+            
+            // Change button text after a few moves
+            if (noButtonMoveCount > 3) {
+                noBtn.innerHTML = 'ارجوك? 🥺';
+            }
+            if (noButtonMoveCount > 6) {
+                noBtn.innerHTML = 'تكفيننن حبيبيي? 💕';
+            }
+            
+            setTimeout(() => {
+                noBtn.style.animation = '';
+            }, 500);
+        }
+
+        // Add shake animation
+        const shakeKeyframes = `
+            @keyframes shake {
+                0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+                25% { transform: translate(-50%, -50%) rotate(-5deg); }
+                75% { transform: translate(-50%, -50%) rotate(5deg); }
+            }
+        `;
+        const style = document.createElement('style');
+        style.textContent = shakeKeyframes;
+        document.head.appendChild(style);
+
+        function showDateMenu() {
+            document.getElementById('questionScreen').style.display = 'none';
+            document.getElementById('dateMenu').style.display = 'block';
+            
+            // Add celebration effect
+            createCelebrationHearts();
+        }
+
+        function createCelebrationHearts() {
+            const container = document.body;
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '💕';
+                    heart.style.position = 'fixed';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = '100%';
+                    heart.style.fontSize = (20 + Math.random() * 30) + 'px';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.zIndex = '9999';
+                    heart.style.animation = 'floatHeart 3s linear forwards';
+                    container.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 100);
+            }
+        }
+
+        function sendToWebhook(data) {
+            console.log('Sending to webhook:', data);
+            
+            fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: `💕 في مشاكس اختار: ${data.type} - ${data.choice}`,
+                    embeds: [{
+                        title: "💕 في مشاكس اختار",
+                        description: `**-:** ${data.type}\n**Choice:** ${data.choice}`,
+                        color: 16738740,
+                        timestamp: new Date().toISOString()
+                    }]
+                })
+            }).catch(err => console.log('Webhook error:', err));
+        }
+
+        function goToDone() {
+            document.body.innerHTML = `
+                <div style="
+                    background: linear-gradient(45deg, #ff6b9d, #c44569, #f8b500, #ff6b9d);
+                    background-size: 400% 400%;
+                    animation: gradientShift 8s ease infinite;
+                    min-height: 100vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    padding: 20px;
+                ">
+                    <div style="
+                        background: rgba(255, 255, 255, 0.95);
+                        backdrop-filter: blur(20px);
+                        padding: 50px 30px;
+                        border-radius: 30px;
+                        box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+                        max-width: 400px;
+                        width: 90%;
+                        animation: celebration 2s ease-out;
+                    ">
+                        <div style="font-size: 4em; margin-bottom: 20px; animation: pulse 2s infinite;">💕</div>
+                        <h1 style="
+                            color: #d63384;
+                            font-size: 2.2em;
+                            margin-bottom: 20px;
+                            font-weight: bold;
+                            animation: glow 2s infinite alternate;
+                        ">Yeey!</h1>
+                        <p style="
+                            color: #666;
+                            font-size: 1.2em;
+                            line-height: 1.5;
+                            margin-bottom: 30px;
+                        ">I'll tell you when we have our sweet date. Baby 💖</p>
+                        <div style="
+                            font-size: 2em;
+                            animation: bounce 2s infinite;
+                        ">✨💕✨</div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes celebration {
+                        0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+                        50% { transform: scale(1.1) rotate(5deg); }
+                        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+                    }
+                    @keyframes pulse {
+                        0%, 100% { transform: scale(1); }
+                        50% { transform: scale(1.1); }
+                    }
+                    @keyframes glow {
+                        0% { text-shadow: 0 3px 6px rgba(214, 51, 132, 0.4); }
+                        100% { text-shadow: 0 5px 20px rgba(214, 51, 132, 0.8); }
+                    }
+                    @keyframes bounce {
+                        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+                        40% { transform: translateY(-10px); }
+                        60% { transform: translateY(-5px); }
+                    }
+                    @keyframes gradientShift {
+                        0% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                        100% { background-position: 0% 50%; }
+                    }
+                </style>
+            `;
+        }
+
+        function openMovieModal() {
+            document.getElementById('movieModal').style.display = 'block';
+        }
+
+        function openGameModal() {
+            document.getElementById('gameModal').style.display = 'block';
+        }
+
+        function openTalkModal() {
+            document.getElementById('talkModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function submitMovie() {
+            const choice = document.getElementById('movieChoice').value;
+            if (choice.trim()) {
+                sendToWebhook({
+                    type: 'Movie',
+                    choice: choice
+                });
+                goToDone();
+            } else {
+                alert('Please enter a movie choice first! 💕');
+            }
+        }
+
+        function selectGame(game) {
+            sendToWebhook({
+                type: 'Game',
+                choice: game
+            });
+            goToDone();
+        }
+
+        function submitCustomGame() {
+            const choice = document.getElementById('customGame').value;
+            if (choice.trim()) {
+                sendToWebhook({
+                    type: 'Game (Custom)',
+                    choice: choice
+                });
+                goToDone();
+            } else {
+                alert('Please enter a game choice first! 💕');
+            }
+        }
+
+        function selectActivity(activity) {
+            sendToWebhook({
+                type: 'Activity',
+                choice: activity
+            });
+            goToDone();
+        }
+
+        function submitActivity() {
+            const choice = document.getElementById('activityChoice').value;
+            if (choice.trim()) {
+                sendToWebhook({
+                    type: 'Activity',
+                    choice: choice
+                });
+                goToDone();
+            } else {
+                alert('Please describe what activity you\'d like first! 💕');
+            }
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = ['movieModal', 'gameModal', 'talkModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    closeModal(modalId);
+                }
+            });
+        }
+
+        // Initialize animations when page loads
+        window.onload = function() {
+            createFloatingElements();
+        }
+    </script>
+</body>
+</html>
